@@ -29,7 +29,7 @@ namespace Service_Camp.Controllers
             return View(ApplicationList);
         }
 
-        public ActionResult Decline(int? id)
+        public ActionResult Handle(int? id,string result)
         {
             if (id == null)
             {
@@ -41,11 +41,21 @@ namespace Service_Camp.Controllers
                 return RedirectToAction("HandleApplication");
             }
             record.Admin = User.Identity.Name;
-            record.States = "Decline";
+            record.States = result;
             record.HandleDate = DateTime.Now;
+            if(result== "Approve")
+            {
+                var server = db.Servers.Find(record.ServerId);
+                var Applicant = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(record.Applicant);
+                Applicant.Server.Add(server);
+                HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().Update(Applicant);
+            }
+
             db.SaveChanges();
 
             return RedirectToAction("HandleApplication"); 
         }
+
+
     }
 }
