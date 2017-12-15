@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Service_Camp.Models.ApplyRecord>
+
+@{
+    ViewBag.Title = "HandleRequest";
+}
+
+<h2>HandleRequest</h2>
+<style>
+</style>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ServerId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Applicant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.States)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HandleDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.States)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HandleDate)
+            </td>
+            <td>
+                <button type="button" name="@item.Id" onclick="setInformation(this)" class="btn btn-default" data-toggle="modal" data-target="#myModal">Approve</button>
+                @Html.ActionLink("Decline", "Decline", new { id = item.Id }, new { @class = "btn btn-default" })
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
+</table>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Set IP</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm())
+                {
+
+                }
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function setInformation() {
+            alert("123");
+        }
+    </script>
+    
+
+
+}
