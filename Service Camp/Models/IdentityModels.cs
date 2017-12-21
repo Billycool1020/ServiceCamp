@@ -20,8 +20,7 @@ namespace Service_Camp.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
-        }
-        public virtual ICollection<Server> Server { get; set; }
+        }      
 
     }
 
@@ -35,6 +34,7 @@ namespace Service_Camp.Models
         public virtual DbSet<Server> Servers { get; set; }
         public virtual DbSet<ServerRentalRecord> ServerRentalRecords { get; set; }
         public virtual DbSet<ApplyRecord> ApplyRecords { get; set; }
+        public virtual DbSet<UserServer> UserServers { get; set; }
 
         public static ApplicationDbContext Create()
         {

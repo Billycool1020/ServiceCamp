@@ -13,18 +13,21 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
     <div class="form-group">
+        <label class="col-md-2 control-label">用户名(WSAlias)</label>        
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.WSAlias, new { @class = "form-control" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
         @Html.LabelFor(m => m.MSAlias, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.MSAlias, new { @class = "form-control" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.WSAlias, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.WSAlias, new { @class = "form-control" })
-        </div>
-    </div>
+
 
     <div class="form-group">
         @Html.LabelFor(m => m.DisplayName, new { @class = "col-md-2 control-label" })
@@ -41,14 +44,14 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <label class="col-md-2 control-label">密码</label>
         <div class="col-md-10">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <label class="col-md-2 control-label">确认密码</label>
         <div class="col-md-10">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>

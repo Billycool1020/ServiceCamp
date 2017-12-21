@@ -1,0 +1,351 @@
+﻿@model Service_Camp.DTO.MyServerDTO
+@{
+    ViewBag.Title = "我的虚拟机";
+}
+
+<style>
+    .title {
+        font-family: 微软雅黑;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    .apply {
+        background-color: #7298bb;
+        border-radius: 10px;
+        color: white;
+        border-style: none;
+        width: 70px;
+        height: 30px;
+        background-image: url("../../Images/加号.png");
+        background-repeat: no-repeat;
+        background-position-y: center;
+        background-position-x: 12px;
+        background-size: 12px;
+        padding-left: 30px;
+    }
+
+    .return {
+        padding-right: 33px;
+        text-align: right;
+    }
+
+    .myserver {
+        margin-top: 12px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #dddddd;
+        width: 100%;
+        font-size: 14px;
+        font-family: 微软雅黑;
+    }
+
+        .myserver button {
+            width: 70px;
+            height: 25px;
+            border-style: solid;
+            border-color: #7298bb;
+            border-radius: 10px;
+            border-width: 1px;
+        }
+
+        .myserver td {
+            padding-left: 20px;
+        }
+
+        .myserver tr {
+            height: 38px;
+        }
+
+            .myserver tr:nth-child(odd) {
+                background-color: #ffffff;
+            }
+
+            .myserver tr:nth-child(even) {
+                background-color: #eeeeee;
+            }
+
+            .myserver tr:nth-child(odd) button {
+                background-color: #ffffff;
+            }
+
+            .myserver tr:nth-child(even) button {
+                background-color: #eeeeee;
+            }
+
+    .board {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #dcdcdc;
+        width: 49%;
+        min-height: 250px;
+        border-radius: 10px;
+        float: left;
+        background-color: #fefefe;
+    }
+
+    .FAQ {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #dcdcdc;
+        width: 49%;
+        min-height: 250px;
+        border-radius: 10px;
+        float: right;
+        background-color: #fefefe;
+    }
+
+    #clear {
+        clear: both;
+    }
+
+    .name {
+        height: 48px;
+        padding-left: 18px;
+        font-family: 微软雅黑;
+        font-size: 16px;
+        border-bottom-style: solid;
+        border-bottom-color: #dcdcdc;
+        border-bottom-width: 1px;
+        line-height: 48px;
+    }
+
+    .more {
+        float: right;
+        padding-right: 18px;
+        font-size: 14px;
+        color: #687889;
+    }
+
+    .board ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .board li::before {
+        content: "•";
+        color: #2d87df;
+    }
+
+    .modal-dialog {
+        width: 480px;
+        min-height: 500px;
+        padding-top: 134px;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-body {
+        max-height: 370px;
+        overflow: auto;
+        line-height: 35px;
+    }
+
+    .modal-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        line-height: 45px;
+        height: 45px;
+        background-color: #2d87df;
+        font-family: 微软雅黑;
+        color: white;
+        font-size: 17px;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+
+        .modal-footer .submit {
+            width: 80px;
+            height: 30px;
+            background-color: #6d96bc;
+            border-radius: 8px;
+            color: white;
+            border-style: none;
+            margin-right: 10px;
+        }
+
+        .modal-footer .cancel {
+            width: 80px;
+            height: 30px;
+            background-color: white;
+            border-radius: 8px;
+            border-style: solid;
+            border-color: #d2d2d2;
+            border-width: 1px;
+        }
+</style>
+<p class="title"><img src="~/Images/标签.png" />我的虚拟机</p>
+<hr style="margin-top:10px;margin-bottom:18px" />
+<div>
+    <button type="button" class="apply" data-toggle="modal" data-target="#myModal">申请</button>
+    <table class="myserver">
+        <tr>
+            <td width="45%">配置</td>
+            <td>链接方式</td>
+            <td></td>
+        </tr>
+        @if (Model.MyServer.Count > 0)
+        {
+            foreach (var s in Model.MyServer)
+            {
+                <tr>
+                    <td>
+                        @s.Name ( @s.Detail )
+                    </td>
+                    <td>
+                        @s.IP
+                    </td>
+                    <td class="return">                        
+                        <button onclick="ReturnVM(this,'@s.ServerId')">归还</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" rowspan="3" style="text-align:center">现在没有任何虚拟机</td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+        }
+    </table>
+</div>
+
+
+<div style="margin-top:38px">
+    <p class="title"><img src="~/Images/标签.png" />我的申请记录</p>
+    <hr style="margin-top:10px;margin-bottom:18px" />
+    <table class="myserver">
+        <tr>
+            <td>配置</td>
+            <td>申请时间</td>
+            <td>状态</td>
+        </tr>
+        @if (Model.ApplyRecord.Count > 0)
+        {
+            foreach (var a in Model.ApplyRecord)
+            {
+                <tr>
+                    <td>
+                        @a.Server.Name ( @a.Server.Detail )
+                    </td>
+                    <td>
+                        @a.CreateDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @(a.States == "Approve" ? "批准" : (a.States == "Active" ? "申请中" : "拒绝"))
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" rowspan="3" style="text-align:center">没有任何申请记录</td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+        }
+    </table>
+</div>
+
+<div style="margin-top:38px">
+    <div class="board">
+        <div class="name">
+            <span>公告栏</span>
+            <a href="#" class="more">更多>></a>
+        </div>
+        <div style="line-height:30px; padding:19px;">
+            <ul>
+                <li>
+                    公告1公告1公告1公告1公告1公告1公告1
+                </li>
+                <li>
+                    公告2公告2公告2公告2公告2公告2公告2
+                </li>
+                <li>
+                    公告3公告3公告3公告3公告3公告3公告3
+                </li>
+                <li>
+                    公告4公告4公告4公告4公告4公告4公告4
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="FAQ">
+        <div class="name">
+            <span>FAQ</span>
+            <a href="#" class="more">更多>></a>
+        </div>
+        <div style="padding:19px;">
+            <p>我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ我是一个最新FAQ</p>
+        </div>
+    </div>
+    <div id="clear"></div>
+
+</div>
+<br />
+
+<style>
+</style>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("Apply", "Servers", FormMethod.Post))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">申请</h4>
+                </div>
+                <div class="modal-body">
+                    @if (Model.AvaliableServer.Count > 0)
+                    {
+                        foreach (var s in Model.AvaliableServer)
+                        {
+                            <input type="checkbox" style="margin-right:14px;" name="ServerId" value="@s.ServerId" /><span>@s.Name ( @s.Detail )</span><br />
+                        }
+                    }
+                    else
+                    {
+                        <p>现在没有可用的虚拟机</p>
+                    }
+
+                </div>
+                <div class="modal-footer" style="border:none">
+                    <button type="submit" class="submit">提交</button>
+                    <button type="button" class="cancel" data-dismiss="modal">取消</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function ReturnVM(x, id) {
+            var serviceURL = '/Servers/RetrunVM';
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                data: JSON.stringify({
+                    ServerId: id
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    location.reload();
+
+                }
+            })
+        }
+    </script>
+}
+
+

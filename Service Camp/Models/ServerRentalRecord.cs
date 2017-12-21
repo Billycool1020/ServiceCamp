@@ -12,7 +12,7 @@ namespace Service_Camp.Models
         public string Renter { get; set; }
         public bool IsActive { get; set; }
         public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateTime? To { get; set; }
 
     }
 }

@@ -16,7 +16,7 @@ namespace Service_Camp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Servers", action = "MyServer", id = UrlParameter.Optional }
             );
         }
     }

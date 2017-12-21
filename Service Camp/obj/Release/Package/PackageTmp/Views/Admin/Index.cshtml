@@ -1,0 +1,342 @@
+﻿@model Service_Camp.DTO.AdminDTO
+@{
+    ViewBag.Title = "管理员界面";
+}
+
+<style>
+    .title {
+        font-family: 微软雅黑;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    .apply {
+        background-color: #7298bb;
+        border-radius: 10px;
+        color: white;
+        border-style: none;
+        width: 70px;
+        height: 30px;
+        background-image: url("../../Images/加号.png");
+        background-repeat: no-repeat;
+        background-position-y: center;
+        background-position-x: 12px;
+        background-size: 12px;
+        padding-left: 30px;
+    }
+
+    .return {
+        padding-right: 33px;
+        text-align: right;
+    }
+
+    .myserver {
+        margin-top: 12px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #dddddd;
+        width: 100%;
+        font-size: 14px;
+        font-family: 微软雅黑;
+        overflow: auto;
+    }
+
+        .myserver button {
+            width: 70px;
+            height: 25px;
+            border-style: solid;
+            border-color: #7298bb;
+            border-radius: 10px;
+            border-width: 1px;
+        }
+
+        .myserver td {
+            padding-left: 20px;
+        }
+
+        .myserver tr {
+            height: 38px;
+        }
+
+            .myserver tr:nth-child(odd) {
+                background-color: #ffffff;
+            }
+
+            .myserver tr:nth-child(even) {
+                background-color: #eeeeee;
+            }
+
+            .myserver tr:nth-child(odd) button {
+                background-color: #ffffff;
+            }
+
+            .myserver tr:nth-child(even) button {
+                background-color: #eeeeee;
+            }
+
+
+    .modal-dialog {
+        width: 480px;
+        min-height: 500px;
+        padding-top: 134px;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-body {
+        max-height: 370px;
+        overflow: auto;
+        line-height: 35px;
+    }
+
+    .modal-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        line-height: 45px;
+        height: 45px;
+        background-color: #2d87df;
+        font-family: 微软雅黑;
+        color: white;
+        font-size: 17px;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+
+        .modal-footer .submit {
+            width: 80px;
+            height: 30px;
+            background-color: #6d96bc;
+            border-radius: 8px;
+            color: white;
+            border-style: none;
+            margin-right: 10px;
+        }
+
+        .modal-footer .cancel {
+            width: 80px;
+            height: 30px;
+            background-color: white;
+            border-radius: 8px;
+            border-style: solid;
+            border-color: #d2d2d2;
+            border-width: 1px;
+        }
+</style>
+
+
+
+<div style="margin-top:38px">
+    <p class="title"><img src="~/Images/标签.png" />所有申请记录</p>
+    <hr style="margin-top:10px;margin-bottom:18px" />
+    <div style="max-height:300px; overflow:auto">
+        <table class="myserver">
+            <tr>
+                <td width="20%">申请人</td>
+                <td width="25%">配置</td>
+                <td width="25%">申请时间</td>
+                <td></td>
+            </tr>
+            @if (Model.ApplyRecords.Count > 0)
+            {
+                foreach (var a in Model.ApplyRecords)
+                {
+                    <tr>
+                        <td>
+                            @a.Applicant
+                        </td>
+                        <td>
+                            @a.Server.Name (@a.Server.Detail)
+                        </td>
+
+                        <td>
+                            @a.CreateDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.ActionLink("Approve", "Handle", new { id = a.Id, result = "Approve" }, new { @class = "btn btn-default" })
+                            @Html.ActionLink("Decline", "Handle", new { id = a.Id, result = "Decline" }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" rowspan="3" style="text-align:center">没有任何申请记录</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+            }
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:38px">
+    <p class="title"><img src="~/Images/标签.png" />归还的虚拟机</p>
+    <hr style="margin-top:10px;margin-bottom:18px" />
+    <div style="max-height:300px; overflow:auto">
+        <table class="myserver">
+            <tr>
+                <td width="45%">配置</td>
+                <td>链接方式</td>
+                <td></td>
+            </tr>
+            @if (Model.DirtyServers.Count > 0)
+            {
+                foreach (var s in Model.DirtyServers)
+                {
+                    <tr>
+                        <td>
+                            @s.Name ( @s.Detail )
+                        </td>
+                        <td>
+                            @s.IP
+                        </td>
+                        <td>
+                            @Html.ActionLink("已处理", "Clean", new { id = s.ServerId }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" rowspan="3" style="text-align:center">没有待清理的虚拟机</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+            }
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:38px">
+    <p class="title"><img src="~/Images/标签.png" />使用中的虚拟机</p>
+    <hr style="margin-top:10px;margin-bottom:18px" />
+    <div style="max-height:300px; overflow:auto">
+        <table class="myserver">
+            <tr>
+                <td width="45%">配置</td>
+                <td>链接方式</td>
+                <td></td>
+            </tr>
+            @if (Model.RentendServers.Count > 0)
+            {
+                foreach (var s in Model.RentendServers)
+                {
+                    <tr>
+                        <td>
+                            @s.Name ( @s.Detail )
+                        </td>
+                        <td>
+                            @s.IP
+                        </td>
+                        <td>
+                            @Html.ActionLink("收回", "Recapture", new { id = s.ServerId }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" rowspan="3" style="text-align:center">没有使用中的虚拟机</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+<p class="title"><img src="~/Images/标签.png" />所有的虚拟机</p>
+<hr style="margin-top:10px;margin-bottom:18px" />
+<div>
+    <button type="button" class="apply" data-toggle="modal" data-target="#myModal">新建</button>
+    <div style="max-height:300px; overflow:auto">
+        <table class="myserver">
+            <tr>
+                <td width="45%">配置</td>
+                <td>链接方式</td>
+                <td></td>
+            </tr>
+            @foreach (var s in Model.AllServers)
+            {
+                <tr>
+                    <td>
+                        @s.Name ( @s.Detail )
+                    </td>
+                    <td>
+                        @s.IP
+                    </td>
+                    <td>
+                        @Html.ActionLink("编辑", "Edit", "Servers", new { id = s.ServerId }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("Create", "Servers", FormMethod.Post))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">新建</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Server.ServerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Server.ServerId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Server.ServerId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Server.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Server.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Server.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Server.IP, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Server.IP, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Server.IP, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Server.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Server.Detail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Server.Detail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none">
+                    <button type="submit" class="submit">提交</button>
+                    <button type="button" class="cancel" data-dismiss="modal">取消</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
